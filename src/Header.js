@@ -21,12 +21,19 @@ class Header extends React.Component {
     return(
       <div>
         <div className="header">
-          <div />
           <div className="header__logo">
             <h3 className="header__logo_title"> Barter </h3>
           </div>
-          <div className="header__links">
-            <button onClick={this.show.bind(this)} className="header__links_post_button">Post Your Item </button>
+        </div>
+        <div className="sub-header">
+          <div class="sub-header__search">
+             <input type="text" class="sub-header__search_term" placeholder="Search" />
+             <button type="submit" class="sub-header__search_button">
+               <i class="fa fa-search"></i>
+            </button>
+          </div>
+          <div className="sub-header__links">
+            <button onClick={this.show.bind(this)} className="sub-header__links_post_button">Post Your Item </button>
           </div>
         </div>
         <Rodal visible={this.state.visible} onClose={this.hide.bind(this)} animation="slideUp">
