@@ -33,17 +33,17 @@ passport.authenticate('google', {
 // Redirect to landing page after authentication
 app.get('/', (req, res) => {
   if (req.session.token) {
+    console.log(JSON.stringify(req.session.passport.user.profile, null, 2));
     console.log(JSON.stringify(req.session.passport.user.profile.displayName));
     res.cookie('token', req.session.token);
-    app.use(express.static(path.join(__dirname, '/build')));
     res.sendFile(path.join(__dirname + '/build/index.html'));
 } else {
-    res.cookie('token', '')
-    res.json({
-        status: 'session cookie not set'
-    });
+    res.cookie('token', '');
+    res.redirect('/landing/index.html');
 }
 });
+
+app.use(express.static(path.join(__dirname, '/build')));
 
 // get all items
 app.get('/api/v1/items', (req, res) => {
@@ -51,7 +51,7 @@ app.get('/api/v1/items', (req, res) => {
 });
 
 // Post an item
-app.get('/api/v1/items', (req, res) => {
+app.post('/api/v1/items', (req, res) => {
   res.json({ hello: "world "});
 });
 
@@ -60,6 +60,10 @@ app.get('/logout', (req, res) => {
     req.logout();
     req.session = null;
     res.redirect('/');
+});
+
+app.get('*', (req, res) => {
+  res.redirect('/');
 });
 
 const port = process.env.PORT || 3001;
