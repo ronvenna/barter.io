@@ -94,3 +94,48 @@
   background-color: #fff;
   margin: 20px;
 }
+
+.submitItem {
+  padding: 10px;
+}
+
+.postContainer {
+  color: #FFF;
+  text-align: center;
+}
+
+.postButton {
+  background-color: #FFF;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 200;
+  padding: 15px;
+  transition-duration: 0.3s;
+  width: 100%;
+}
+
+.postButton:focus {
+  border: 2px solid #24525B;
+  outline: none;
+}
+
+.postButton:hover {
+  background-color: #53B2A6;
+  color: white;
+  cursor: pointer;
+}
+
+.postItemInput {
+  border-radius: 5px;
+  border: 2px solid transparent;
+  height: 20px;
+  margin: 2px 0 2px 0;
+  padding: 10px;
+  width: 350px;
+}
+
+.postItemInput:focus {
+  border: 2px solid #24525B;
+  outline: none;
+}

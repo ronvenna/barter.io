@@ -37,7 +37,26 @@ class Header extends React.Component {
           </div>
         </div>
         <Rodal visible={this.state.visible} onClose={this.hide.bind(this)} animation="slideUp">
-          <div>Content</div>
+          <div className="postContainer">
+            <div className="startBarter">
+              <p className="startBarterTitle">START A BARTER:</p>
+            </div>
+            <div>
+              <input type="text" placeholder="Item Name" className="postItemInput"/>
+            </div>
+            <div>
+              <input type="text" placeholder="Quantity" className="postItemInput"/>
+            </div>
+            <div>
+              <input type="text" placeholder="Expiration (in days)" className="postItemInput"/>
+            </div>
+            <div>
+              <p>Upload an Image:</p>
+            </div>
+            <div className="submitItem">
+              <button className="postButton">Post</button>
+            </div>
+          </div>
         </Rodal>
       </div>
     );
