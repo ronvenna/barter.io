@@ -23,7 +23,7 @@
     "mysql": "^2.18.1",
     "js-sha1": "^0.6.0",
     "body-parser": "^1.19.0",
-    "fs":"^0.0.1-security"
+    "fs": "^0.0.1-security"
   },
   "scripts": {
     "start": "npm run server",

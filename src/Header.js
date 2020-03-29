@@ -26,10 +26,10 @@ class Header extends React.Component {
           </div>
         </div>
         <div className="sub-header">
-          <div class="sub-header__search">
-             <input type="text" class="sub-header__search_term" placeholder="Search" />
-             <button type="submit" class="sub-header__search_button">
-               <i class="fa fa-search"></i>
+          <div className="sub-header__search">
+             <input type="text" className="sub-header__search_term" placeholder="Search" />
+             <button type="submit" className="sub-header__search_button">
+               <i className="fa fa-search"></i>
             </button>
           </div>
           <div className="sub-header__links">

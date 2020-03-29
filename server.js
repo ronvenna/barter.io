@@ -65,7 +65,7 @@ app.get('/api/v1/user', (req, res) => {
     });
 });
 
-// create new customer 
+// create new customer
 app.post('/api/v1/user', (req, res) => {
     const items = require('./models/customerinfo');
     var record={
@@ -85,7 +85,7 @@ app.post('/api/v1/user', (req, res) => {
         res.status(200).send(JSON.stringify(items));
     });
 });
-// Update Customer image 
+// Update Customer image
 app.post('/api/v1/userimage', (req, res) => {
     const items = require('./models/customerinfo');
      var customerid = req.body[0].customerid;
@@ -109,7 +109,7 @@ app.post('/api/v1/usermail', (req, res) => {
         res.status(200).send(JSON.stringify(items));
     });
 });
-// Update Customer Address 
+// Update Customer Address
 app.post('/api/v1/useraddress', (req, res) => {
     const items = require('./models/customerinfo');
     var recrd = {
@@ -176,7 +176,7 @@ app.post('/api/v1/availableitemsbyid', (req, res) => {
         res.status(200).send(JSON.stringify(items));
     });
 });
-//update available items by customerid 
+//update available items by customerid
 app.post('/api/v1/updateitemsbyid', (req, res) => {
     const items = require('./models/customerinfo');
     var recrd = {
@@ -235,7 +235,7 @@ app.post('/api/v1/items', (req, res) => {
     });
 });
 
-// Update items by item Id 
+// Update items by item Id
 app.post('/api/v1/itemsupdate', (req, res) => {
     const items = require('./models/itemsInfo');
     var recrd = {
@@ -259,9 +259,9 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.get('*', (req, res) => {
-  res.redirect('/');
-});
+// app.get('*', (req, res) => {
+//   res.redirect('/');
+// });
 
 const port = process.env.PORT || 3001;
 app.listen(port);
