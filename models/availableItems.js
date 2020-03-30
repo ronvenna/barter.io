@@ -9,6 +9,19 @@ var availableItemsInfo = function(availableItems){
     this.location_long = availableitems.location_long;
     this.zipcode = availableitems.zipcode;
 };
+availableItemsInfo.createAvailableItem = function (newitem, result) {    
+    sql.query("INSERT INTO availableitems set ?", newitem, function (err, res) {
+            
+            if(err) {
+                console.log("error: ", err);
+                result(err, null);
+            }
+            else{
+                console.log(res.insertId);
+                result(null, res.insertId);
+            }
+        });           
+};
 availableItemsInfo.getAvailableItemsByCustomer = function (customerid, result) {
         sql.query("Select * from availableitems where customerid = ? ", customerid, function (err, res) {             
                 if(err) {
@@ -34,7 +47,7 @@ availableItemsInfo.getAvailableItemsByItemId = function (customerid, result) {
         });   
 };
 availableItemsInfo.getAllavailableItems = function (result) {
-        sql.query("Select * from availableitems", function (err, res) {
+        sql.query("Select * from availableitems inner join customerinfo on availableitems.customerid = customerinfo.customerid", function (err, res) {
 
                 if(err) {
                     console.log("error: ", err);
@@ -48,6 +61,7 @@ availableItemsInfo.getAllavailableItems = function (result) {
             });   
 };
 availableItemsInfo.insertAvailableItemsById = function(item, result){
+    console.log(JSON.stringify(item))
   sql.query("INSERT INTO availableitems (customerid,itemid,quantity,location_lat,location_long,zipcode) = ?", [item.customerid,item.itemid,item.quantity,item.location_lat,item.location_long,item.zipcode], function (err, res) {
           if(err) {
               console.log("error: ", err);
