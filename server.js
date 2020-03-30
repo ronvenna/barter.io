@@ -32,6 +32,7 @@ passport.authenticate('google', {
 (req, res) => {
     req.session.token = req.user.token;
     req.session.email = req.user.profile.emails[0].value;
+    req.session.name = req.user.profile.displayName;
     res.redirect('/');
 }
 );
@@ -53,10 +54,8 @@ app.get('/', (req, res) => {
                 customerpicturelocation:""
                 }
             items.createCustomer(record,function (err, items) {
-                console.log("2");
                 if (err)
                     res.send(err);
-                console.log('res', items);
                 res.status(200).send(JSON.stringify(items));
             });
         }
@@ -116,8 +115,7 @@ app.post('/api/v1/useraddress', (req, res) => {
 app.get('/api/v1/availableItems', (req, res) => {
     var items = require('./models/availableItems');
     var customerObject = require('./models/customerInfo');
-
-    items.getAllavailableItems(function (err, items) {
+    items.getAllavailableItems(req.session.name,function (err, items) {
         if (err){
             res.send(err);
         }
@@ -149,6 +147,7 @@ app.get('/api/v1/availableitemsbyitemid', (req, res) => {
 //create available items
 app.post('/api/v1/availableitems', (req, res) => {
     const items = require('./models/availableItems');
+    var itemDetails = require('./models/itemsInfo');
     var customerid = sha1(req.session.email).replace(/'/g,'');
     var itemid = sha1(req.body[0].itemname).replace(/'/g,'')
     var record = {
@@ -160,11 +159,24 @@ app.post('/api/v1/availableitems', (req, res) => {
         zipcode: req.body[0].zipcode
     }
     items.createAvailableItem(record,function (err, items) {
-        if (err)
+        if (err){
             res.send(err);
-        console.log('res', items);
-        res.status(200).send(JSON.stringify(items));
+        }
+        else{
+            var record1 = {
+                itemid:sha1(req.body[0].itemname),
+                itemname:req.body[0].itemname,
+                itemtype:req.body[0].description,
+                itempicturelocation:req.body[0].itempicturelocation
+            }
+
+            itemDetails.createItem(record1,function (err, items) {
+                if (err)
+                res.status(200).send(JSON.stringify(items));
+            });
+        }
     });
+
 });
 //update available items by customerid
 app.post('/api/v1/updateitemsbyid', (req, res) => {
@@ -180,7 +192,6 @@ app.post('/api/v1/updateitemsbyid', (req, res) => {
     items.updateAvailableItemsById(record,function (err, items) {
         if (err)
             res.send(err);
-        console.log('res', items);
         res.status(200).send(JSON.stringify(items));
     });
 });
@@ -233,7 +244,6 @@ app.post('/api/v1/itemsupdate', (req, res) => {
     items.updateItemById(record,function (err, items) {
         if (err)
             res.send(err);
-        console.log('res', items);
         res.status(200).send(JSON.stringify(items));
     });
 });
