@@ -13,18 +13,15 @@ auth(passport);
 app.use(passport.initialize());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(cookieSession({
   name: 'session',
   keys: ['testKey']
 }));
 app.use(cookieParser());
-
 // Authentication Call
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/userinfo.profile']
 }));
-
 // Authntication Call back which is configured on google console
 app.get('/auth/google/callback',
 passport.authenticate('google', {
@@ -35,7 +32,6 @@ passport.authenticate('google', {
     res.redirect('/');
 }
 );
-
 // Redirect to landing page after authentication
 app.get('/', (req, res) => {
   if (req.session.token) {
@@ -48,10 +44,7 @@ app.get('/', (req, res) => {
     res.redirect('/landing/index.html');
 }
 });
-
 app.use(express.static(path.join(__dirname, '/build')));
-
-
 //customerinfo table API's
 // Check If user exists with email input email -> output customer details
 app.get('/api/v1/user', (req, res) => {
@@ -60,11 +53,10 @@ app.get('/api/v1/user', (req, res) => {
     items.getCustomerDeatailsByEmail(email,function (err, items) {
         if (err)
             res.send(err);
-        items[0].customerpicturelocation = Buffer.from(items[0].customerpicturelocation, 'base64').toString('ascii');;
+        items[0].customerpicturelocation = Buffer.from(items[0].customerpicturelocation, 'base64').toString('ascii');
         res.send(items);
     });
 });
-
 // create new customer
 app.post('/api/v1/user', (req, res) => {
     const items = require('./models/customerinfo');
@@ -126,7 +118,6 @@ app.post('/api/v1/useraddress', (req, res) => {
         res.status(200).send(JSON.stringify(items));
     });
 });
-
 // Availableitemsinfo table API's
 // get all available items
 app.get('/api/v1/availableItems', (req, res) => {
@@ -137,7 +128,6 @@ app.get('/api/v1/availableItems', (req, res) => {
         res.send(items);
     });
 });
-
 // get availableitems by customerid
 app.get('/api/v1/availableitemsbycustomerid', (req, res) => {
     var customerid = req.query.customerid;
@@ -194,8 +184,6 @@ app.post('/api/v1/updateitemsbyid', (req, res) => {
         res.status(200).send(JSON.stringify(items));
     });
 });
-
-
 // Items Info table API's
 // get all items
 app.get('/api/v1/items', (req, res) => {
@@ -203,21 +191,21 @@ app.get('/api/v1/items', (req, res) => {
     items.getAllItems(function (err, items) {
         if (err)
             res.send(err);
+    //    items[0].itempicturelocation = Buffer.from(items[0].itempicturelocation, 'base64').toString('ascii');
         res.send(items);
     });
 });
-
 // get item deatails by itemid
-app.get('/api/v1/items', (req, res) => {
+app.get('/api/v1/itemsbyid', (req, res) => {
     var itemid = req.query.itemid;
     const items = require('./models/itemsInfo');
     items.getItemDetailsById(itemid,function (err, items) {
         if (err)
             res.send(err);
+    //    items[0].itempicturelocation = Buffer.from(items[0].itempicturelocation, 'base64').toString('ascii');
         res.send(items);
     });
 });
-
 // Post an item
 app.post('/api/v1/items', (req, res) => {
     const items = require('./models/itemsInfo');
@@ -227,22 +215,20 @@ app.post('/api/v1/items', (req, res) => {
         itemtype:req.body[0].itemtype,
         itempicturelocation:req.body[0].itemspicturelocation
     }
-
     items.createItem(record,function (err, items) {
         if (err)
             res.send(err);
         res.send(items);
     });
 });
-
 // Update items by item Id
 app.post('/api/v1/itemsupdate', (req, res) => {
     const items = require('./models/itemsInfo');
-    var recrd = {
+    var record = {
         itemid:req.body[0].itemid,
         itemname:req.body[0].itemname,
         itemtype:req.body[0].itemtype,
-        itempicturelocation:req.body[0].itemspicturelocation
+        itempicturelocation:req.body[0].itempicturelocation
     }
     items.updateItemById(record,function (err, items) {
         if (err)
@@ -251,19 +237,15 @@ app.post('/api/v1/itemsupdate', (req, res) => {
         res.status(200).send(JSON.stringify(items));
     });
 });
-
 // logout call TO-DO
 app.get('/logout', (req, res) => {
     req.logout();
     req.session = null;
     res.redirect('/');
 });
-
 // app.get('*', (req, res) => {
 //   res.redirect('/');
 // });
-
 const port = process.env.PORT || 3001;
 app.listen(port);
-
 console.log(`listening on ${port}`);

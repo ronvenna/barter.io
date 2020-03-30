@@ -2,11 +2,16 @@ import React from 'react';
 import Rodal from 'rodal';
 // include styles
 import 'rodal/lib/rodal.css';
+import PostItem from './PostItem';
 
 class Header extends React.Component {
   constructor(props) {
   super(props);
     this.state = { visible: false };
+
+    this.show = this.show.bind(this);
+    this.hide = this.hide.bind(this);
+    this.hideAndRefresh = this.hideAndRefresh.bind(this);
   }
 
   show() {
@@ -15,6 +20,11 @@ class Header extends React.Component {
 
   hide() {
     this.setState({ visible: false });
+  }
+
+  hideAndRefresh() {
+    this.hide();
+    this.props.refresh();
   }
 
   render(){
@@ -33,30 +43,13 @@ class Header extends React.Component {
             </button>
           </div>
           <div className="sub-header__links">
-            <button onClick={this.show.bind(this)} className="sub-header__links_post_button">Post Your Item </button>
+            <button onClick={this.show} className="sub-header__links_post_button">Post Your Item </button>
           </div>
         </div>
         <Rodal visible={this.state.visible} onClose={this.hide.bind(this)} animation="slideUp">
-          <div className="postContainer">
-            <div className="startBarter">
-              <p className="startBarterTitle">START A BARTER:</p>
-            </div>
-            <div>
-              <input type="text" placeholder="Item Name" className="postItemInput"/>
-            </div>
-            <div>
-              <input type="text" placeholder="Quantity" className="postItemInput"/>
-            </div>
-            <div>
-              <input type="text" placeholder="Expiration (in days)" className="postItemInput"/>
-            </div>
-            <div>
-              <p>Upload an Image:</p>
-            </div>
-            <div className="submitItem">
-              <button className="postButton">Post</button>
-            </div>
-          </div>
+          <PostItem
+            onSubmit={this.hideAndRefresh}
+          />
         </Rodal>
       </div>
     );

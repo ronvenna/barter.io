@@ -105,10 +105,26 @@
   border: 1px solid rgba(0,0,0,0.1);
   background-color: #fff;
   margin: 20px;
+  text-align: center;
+}
+
+.item__title_container {
+  height: 40px;
+  background: rgba(83,178,166, .5);
+  margin-bottom: 20px;
+}
+
+.item__image {
+  width: 100%;
+}
+
+.item__title {
+    text-transform: capitalize;
 }
 
 .rodal-dialog {
   background: #53B2A6;
+  height: 400px !important;
 }
 
 .rodal-dialog:focus {
@@ -144,6 +160,15 @@
   background-color: #53B2A6;
   color: white;
   cursor: pointer;
+}
+
+.postItemImage {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.startBarter {
+  margin-bottom: 20px;
 }
 
 .postItemInput {
