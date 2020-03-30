@@ -171,8 +171,11 @@ app.post('/api/v1/availableitems', (req, res) => {
             }
 
             itemDetails.createItem(record1,function (err, items) {
-                if (err)
-                res.status(200).send(JSON.stringify(items));
+                if (err) {
+                  console.log(err)
+                } else {
+                  res.status(200).send(JSON.stringify(items));
+                }
             });
         }
     });

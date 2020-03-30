@@ -10,6 +10,7 @@ class PostItem extends React.Component {
       quanitity: '',
       description: '',
       image: '',
+      zipCode: '',
     }
     this.submit = this.submit.bind(this);
   }
@@ -21,12 +22,17 @@ class PostItem extends React.Component {
       quanitity,
       description,
       image,
+      zipCode,
     } = this.state;
     const record = [
       {
         itemname: name,
-        itemtype: image,
         itempicturelocation: image,
+        quantity: quanitity,
+        zipcode: zipCode,
+        description: description,
+        location_lat: "",
+        location_long: "",
       }
     ];
     const requestOptions = {
@@ -36,7 +42,7 @@ class PostItem extends React.Component {
     };
     console.log('posting this');
     console.log(JSON.stringify(record));
-    fetch('/api/v1/items', requestOptions)
+    fetch('/api/v1/availableitems', requestOptions)
         .then(response => response.json())
         .then(this.props.onSubmit)
         .catch(console.error)
@@ -58,7 +64,7 @@ class PostItem extends React.Component {
         </div>
         <div>
           <input
-            type="text"
+            type="number"
             placeholder="Quantity"
             className="postItemInput"
             value={this.state.quanitity}
@@ -66,9 +72,19 @@ class PostItem extends React.Component {
           />
         </div>
         <div>
+          <input
+            type="number"
+            pattern="[0-9]{5}"
+            placeholder="Zip Code"
+            className="postItemInput"
+            value={this.state.zipCode}
+            onChange={(e) => this.setState({ zipCode: e.target.value })}
+          />
+        </div>
+        <div>
           <textarea
             type="text"
-            placeholder="description"
+            placeholder="Description"
             className="postItemInput"
             value={this.state.description}
             onChange={(e) => this.setState({ description: e.target.value })}
