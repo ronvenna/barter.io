@@ -33,7 +33,7 @@ class Items extends React.Component {
 
   getItems() {
     this.setState({ loading: true });
-    fetch('/api/v1/availableItems')
+    fetch('/api/v1/items')
       .then((res) => res.json())
       .then((items) => this.setState(() => ({ items, loading: false })))
       .catch(console.error)
