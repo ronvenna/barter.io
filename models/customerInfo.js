@@ -26,7 +26,7 @@ customerInfo.createCustomer = function (newCustomer, result) {
 };
 
 customerInfo.getCustomerDetailsById = function (customerId, result) {
-    sql.query("Select * from customerinfo where customerid = ? ", customerId, function (err, res) {             
+    sql.query("Select email from customerinfo where customerid = ? ", customerId, function (err, res) {             
             if(err) {
                 console.log("error: ", err);
                 result(err, null);
@@ -39,6 +39,7 @@ customerInfo.getCustomerDetailsById = function (customerId, result) {
         });   
 };
 customerInfo.getCustomerDeatailsByEmail = function (email, result) {
+    console.log(email);
     sql.query("Select * from customerinfo where email = ? ", email, function (err, res) {             
             if(err) {
                 console.log("error: ", err);

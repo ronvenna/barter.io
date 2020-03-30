@@ -9,6 +9,7 @@ const db = require('./db');
 const sha1 = require('js-sha1');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+var customer;
 auth(passport);
 app.use(passport.initialize());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,7 +21,8 @@ app.use(cookieSession({
 app.use(cookieParser());
 // Authentication Call
 app.get('/auth/google', passport.authenticate('google', {
-  scope: ['https://www.googleapis.com/auth/userinfo.profile']
+  scope: ['https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/userinfo.email']
 }));
 // Authntication Call back which is configured on google console
 app.get('/auth/google/callback',
@@ -29,15 +31,36 @@ passport.authenticate('google', {
 }),
 (req, res) => {
     req.session.token = req.user.token;
+    req.session.email = req.user.profile.emails[0].value;
     res.redirect('/');
 }
 );
 // Redirect to landing page after authentication
 app.get('/', (req, res) => {
+  const customerObject = require('./models/customerinfo');
   if (req.session.token) {
-    // console.log(JSON.stringify(req.session.passport.user.profile, null, 2));
-     console.log(JSON.stringify(req.session.passport.user.profile.displayName));
     res.cookie('token', req.session.token);
+    customerObject.getCustomerDeatailsByEmail(req.session.email,function (err, items) {
+        if (err){
+            var record={
+                customerid: sha1(req.session.customer),
+                email: req.session.customer,
+                phone_number: "",
+                address:"",
+                address_lat: "",
+                address_long:"",
+                zipcode:"",
+                customerpicturelocation:""
+                }
+            items.createCustomer(record,function (err, items) {
+                console.log("2");
+                if (err)
+                    res.send(err);
+                console.log('res', items);
+                res.status(200).send(JSON.stringify(items));
+            });
+        }
+    });
     res.sendFile(path.join(__dirname + '/build/index.html'));
 } else {
     res.cookie('token', '');
@@ -45,38 +68,8 @@ app.get('/', (req, res) => {
 }
 });
 app.use(express.static(path.join(__dirname, '/build')));
+
 //customerinfo table API's
-// Check If user exists with email input email -> output customer details
-app.get('/api/v1/user', (req, res) => {
-    const items = require('./models/customerinfo');
-    var email = req.query.email;
-    items.getCustomerDeatailsByEmail(email,function (err, items) {
-        if (err)
-            res.send(err);
-        items[0].customerpicturelocation = Buffer.from(items[0].customerpicturelocation, 'base64').toString('ascii');
-        res.send(items);
-    });
-});
-// create new customer
-app.post('/api/v1/user', (req, res) => {
-    const items = require('./models/customerinfo');
-    var record={
-        customerid: sha1(req.body[0].email),
-        email: req.body[0].email,
-        phone_number: req.body[0].phone_number,
-        address:req.body[0].address,
-        address_lat: req.body[0].address_lat,
-        address_long:req.body[0].address_long,
-        zipcode:req.body[0].zipcode,
-        customerpicturelocation:req.body[0].customerpicturelocation
-        }
-    items.createCustomer(record,function (err, items) {
-        if (err)
-            res.send(err);
-        console.log('res', items);
-        res.status(200).send(JSON.stringify(items));
-    });
-});
 // Update Customer image
 app.post('/api/v1/userimage', (req, res) => {
     const items = require('./models/customerinfo');
@@ -104,7 +97,7 @@ app.post('/api/v1/usermail', (req, res) => {
 // Update Customer Address
 app.post('/api/v1/useraddress', (req, res) => {
     const items = require('./models/customerinfo');
-    var recrd = {
+    var record = {
     customerid:req.body[0].customerid,
     address: req.body[0].address,
     lat:req.body[0].address_lat,
@@ -121,11 +114,16 @@ app.post('/api/v1/useraddress', (req, res) => {
 // Availableitemsinfo table API's
 // get all available items
 app.get('/api/v1/availableItems', (req, res) => {
-    const items = require('./models/availableItems');
+    var items = require('./models/availableItems');
+    var customerObject = require('./models/customerInfo');
+
     items.getAllavailableItems(function (err, items) {
-        if (err)
+        if (err){
             res.send(err);
-        res.send(items);
+        }
+        else{
+            res.send(items);
+    }
     });
 });
 // get availableitems by customerid
@@ -149,17 +147,19 @@ app.get('/api/v1/availableitemsbyitemid', (req, res) => {
     });
 });
 //create available items
-app.post('/api/v1/availableitemsbyid', (req, res) => {
-    const items = require('./models/customerinfo');
-    var recrd = {
-        customerid: req.body[0].customerid,
-        itemid: req.body[0].itemid,
+app.post('/api/v1/availableitems', (req, res) => {
+    const items = require('./models/availableItems');
+    var customerid = sha1(req.session.email).replace(/'/g,'');
+    var itemid = sha1(req.body[0].itemname).replace(/'/g,'')
+    var record = {
+        customerid:customerid,
+        itemid: itemid,
         quantity: req.body[0].quantity,
         location_lat: req.body[0].location_lat,
         location_long: req.body[0].location_long,
         zipcode: req.body[0].zipcode
     }
-    items.insertAvailableItemsById(record,function (err, items) {
+    items.createAvailableItem(record,function (err, items) {
         if (err)
             res.send(err);
         console.log('res', items);
@@ -169,7 +169,7 @@ app.post('/api/v1/availableitemsbyid', (req, res) => {
 //update available items by customerid
 app.post('/api/v1/updateitemsbyid', (req, res) => {
     const items = require('./models/customerinfo');
-    var recrd = {
+    var record = {
         customerid: req.body[0].customerid,
         itemid: req.body[0].itemid,
         quantity: req.body[0].quantity,
@@ -213,7 +213,7 @@ app.post('/api/v1/items', (req, res) => {
         itemid:sha1(req.body[0].itemname),
         itemname:req.body[0].itemname,
         itemtype:req.body[0].itemtype,
-        itempicturelocation:req.body[0].itemspicturelocation
+        itempicturelocation:req.body[0].itempicturelocation
     }
     items.createItem(record,function (err, items) {
         if (err)
