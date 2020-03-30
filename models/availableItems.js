@@ -2,16 +2,18 @@
 var sql = require('../db.js');
 
 var availableItemsInfo = function(availableItems){
-    this.customerid = availableitems.customerid;
-    this.itemid = availableitems.itemid;
-    this.quantity = availableitems.quantity;
-    this.location_lat = availableitems.location_lat;
-    this.location_long = availableitems.location_long;
-    this.zipcode = availableitems.zipcode;
+    this.customerid = availableItems.customerid;
+    this.itemid = availableItems.itemid;
+    this.itemusername = availableItems.itemusername;
+    this.itememail = availableItems.itememail;
+    this.quantity = availableItems.quantity;
+    this.location_lat = availableItems.location_lat;
+    this.location_long = availableItems.location_long;
+    this.zipcode = availableItems.zipcode;
 };
-availableItemsInfo.createAvailableItem = function (newitem, result) {    
+availableItemsInfo.createAvailableItem = function (newitem, result) {
     sql.query("INSERT INTO availableitems set ?", newitem, function (err, res) {
-            
+
             if(err) {
                 console.log("error: ", err);
                 result(err, null);
@@ -20,31 +22,31 @@ availableItemsInfo.createAvailableItem = function (newitem, result) {
                 console.log(res.insertId);
                 result(null, res.insertId);
             }
-        });           
+        });
 };
 availableItemsInfo.getAvailableItemsByCustomer = function (customerid, result) {
-        sql.query("Select * from availableitems where customerid = ? ", customerid, function (err, res) {             
+        sql.query("Select * from availableitems where customerid = ? ", customerid, function (err, res) {
                 if(err) {
                     console.log("error: ", err);
                     result(err, null);
                 }
                 else{
                     result(null, res);
-              
+
                 }
-            });   
+            });
 };
 availableItemsInfo.getAvailableItemsByItemId = function (customerid, result) {
-    sql.query("Select * from availableitems where itemid = ? ", itemid, function (err, res) {             
+    sql.query("Select * from availableitems where itemid = ? ", itemid, function (err, res) {
             if(err) {
                 console.log("error: ", err);
                 result(err, null);
             }
             else{
                 result(null, res);
-          
+
             }
-        });   
+        });
 };
 availableItemsInfo.getAllavailableItems = function (name,email,result) {
         sql.query("Select *,? AS name,? AS email from availableitems left outer join itemsinfo on availableitems.itemid = itemsinfo.itemid",[name,email], function (err, res) {
@@ -54,11 +56,11 @@ availableItemsInfo.getAllavailableItems = function (name,email,result) {
                     result(null, err);
                 }
                 else{
-                  console.log('tasks : ', res);  
+                  console.log('tasks : ', res);
 
                  result(null, res);
                 }
-            });   
+            });
 };
 availableItemsInfo.insertAvailableItemsById = function(item, result){
     console.log(JSON.stringify(item))
@@ -67,11 +69,11 @@ availableItemsInfo.insertAvailableItemsById = function(item, result){
               console.log("error: ", err);
                 result(null, err);
              }
-           else{   
+           else{
              result(null, res);
 
         }
-     }); 
+     });
 };
 
 availableItemsInfo.updateAvailableItemsById = function(id, item, result){
@@ -80,10 +82,10 @@ availableItemsInfo.updateAvailableItemsById = function(id, item, result){
                 console.log("error: ", err);
                   result(null, err);
                }
-             else{   
+             else{
                result(null, res);
                   }
-              }); 
+              });
   };
   availableItemsInfo.remove = function(id, result){
      sql.query("DELETE FROM availableitems WHERE id = ?", [id], function (err, res) {
@@ -93,10 +95,10 @@ availableItemsInfo.updateAvailableItemsById = function(id, item, result){
                     result(null, err);
                 }
                 else{
-               
+
                  result(null, res);
                 }
-            }); 
+            });
 };
 
 module.exports= availableItemsInfo;

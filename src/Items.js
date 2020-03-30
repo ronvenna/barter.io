@@ -77,7 +77,7 @@ class Items extends React.Component {
   }
 
   generateEmailTemplate(selectedItem) {
-    const emailTemplate = `mailto:ronvenna@egmail.com?Subject=%20Let%27s%20Barter%21&Body=Hey%20Posting%20User%2C%0AI%20saw%20your%20post%20about%20Posted%20Item.%20Would%20you%20be%20willing%20to%20exchange%20it%20for%20%5Blet%20requesting%20user%20enter%20items%20they%20want%20here%5D%0ABest%2C%0ARequesting%20User`;
+    const emailTemplate = `mailto:${selectedItem.itemdescription}?Subject=%20Let%27s%20Barter%21&Body=Hey%20Posting%20User%2C%0AI%20saw%20your%20post%20about%20Posted%20Item.%20Would%20you%20be%20willing%20to%20exchange%20it%20for%20%5Blet%20requesting%20user%20enter%20items%20they%20want%20here%5D%0ABest%2C%0A${selectedItem.name}`;
     return emailTemplate;
   }
 

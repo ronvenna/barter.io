@@ -163,10 +163,14 @@ app.post('/api/v1/availableitems', (req, res) => {
             res.send(err);
         }
         else{
+            console.log("this is the session");
+            console.log(req.session.email);
+            console.log(req.session.name);
             var record1 = {
                 itemid:sha1(req.body[0].itemname),
                 itemname:req.body[0].itemname,
                 itemtype:req.body[0].description,
+                itemdescription: req.session.email,
                 itempicturelocation:req.body[0].itempicturelocation
             }
 
