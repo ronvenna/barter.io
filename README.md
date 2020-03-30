@@ -72,4 +72,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Database ER Diagram
 
-![MYSQL DATABASE ER DIAGRAM] (https://github.com/ronvenna/barter.io/blob/master/barterdatabasedesign.png)
+![MYSQL DATABASE ER DIAGRAM](https://github.com/ronvenna/barter.io/blob/master/barterdatabasedesign.png)
