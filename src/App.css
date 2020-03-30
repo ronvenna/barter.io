@@ -106,6 +106,7 @@
   background-color: #fff;
   margin: 20px;
   text-align: center;
+  cursor: pointer;
 }
 
 .item__title_container {
@@ -120,6 +121,24 @@
 
 .item__title {
     text-transform: capitalize;
+}
+
+.selected_item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.selected_item > h2 {
+  text-transform: capitalize;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.selected_item > img {
+  width: 200px;
+  height: auto;
 }
 
 .rodal-dialog {
