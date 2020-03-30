@@ -115,7 +115,7 @@ app.post('/api/v1/useraddress', (req, res) => {
 app.get('/api/v1/availableItems', (req, res) => {
     var items = require('./models/availableItems');
     var customerObject = require('./models/customerInfo');
-    items.getAllavailableItems(req.session.name,function (err, items) {
+    items.getAllavailableItems(req.session.name,req.session.email,function (err, items) {
         if (err){
             res.send(err);
         }

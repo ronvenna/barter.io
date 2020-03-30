@@ -46,8 +46,8 @@ availableItemsInfo.getAvailableItemsByItemId = function (customerid, result) {
             }
         });   
 };
-availableItemsInfo.getAllavailableItems = function (name,result) {
-        sql.query("Select *,? AS name from availableitems inner join customerinfo on availableitems.customerid = customerinfo.customerid",[name], function (err, res) {
+availableItemsInfo.getAllavailableItems = function (name,email,result) {
+        sql.query("Select *,? AS name,? AS email from availableitems left outer join itemsinfo on availableitems.itemid = itemsinfo.itemid",[name,email], function (err, res) {
 
                 if(err) {
                     console.log("error: ", err);
