@@ -9,10 +9,12 @@ class Items extends React.Component {
     this.state = {
       loading: true,
       items: [],
+      allItems: [],
       modalOpen: false,
       selectedItem: null,
     }
 
+    this.search = this.search.bind(this);
     this.showItem = this.showItem.bind(this);
     this.hideItem = this.hideItem.bind(this);
     this.getItems = this.getItems.bind(this);
@@ -36,8 +38,19 @@ class Items extends React.Component {
     this.setState({ loading: true });
     fetch('/api/v1/availableitems')
       .then((res) => res.json())
-      .then((items) => this.setState(() => ({ items, loading: false })))
+      .then((items) => this.setState(() => ({ allItems: items, items, loading: false })))
       .catch(console.error)
+  }
+
+  search(value) {
+    console.log(value)
+    if(!value) {
+      this.setState({ items: this.state.allItems });
+    } else {
+      this.setState({
+        items: this.state.allItems.filter(c => c.itemname.toLowerCase().indexOf(value.toLowerCase()) >= 0)
+      });
+    }
   }
 
   renderItem(item) {
@@ -51,11 +64,11 @@ class Items extends React.Component {
           <p className="item__title"> {item.itemname} </p>
         </div>
         {
-          item.itemtype ? (
+          item.itempicturelocation ? (
             <img
               alt={item.itemname}
               className="item__image"
-              src={item.itemtype}
+              src={item.itempicturelocation}
             />
         ) : null
         }
@@ -78,6 +91,7 @@ class Items extends React.Component {
     return (
       <div>
         <Header
+          onSearch={this.search}
           refresh={this.getItems}
         />
         {
@@ -106,12 +120,17 @@ class Items extends React.Component {
             selectedItem && (
               <div className="selected_item">
                 <h2> {selectedItem.itemname} </h2>
+                <h3> Description </h3>
+                <p> {selectedItem.itemtype} </p>
+                <br />
+                <h4> Location: {selectedItem.zipcode} </h4>
+                <h4> Quantity: {selectedItem.quantity} </h4>
                 {
-                  selectedItem.itemtype && (
+                  selectedItem.itempicturelocation && (
                     <img
                       alt={selectedItem.itemname}
                       className="item__image"
-                      src={selectedItem.itemtype}
+                      src={selectedItem.itempicturelocation}
                     />
                   )
                 }

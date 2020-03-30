@@ -125,10 +125,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 .item__image {
   width: 100%;
+  height: 100%;
 }
 
 .item__title {
     text-transform: capitalize;
+    line-height: 2.5;
 }
 
 .selected_item {
@@ -146,12 +148,17 @@ input[type=number]::-webkit-outer-spin-button {
 
 .selected_item > img {
   width: 200px;
-  height: auto;
+  height: 290px;
+  margin-top: 20px;
+}
+
+.rodal-close {
+  background: #fff !important;
 }
 
 .rodal-dialog {
   background: #53B2A6;
-  height: 400px !important;
+  height: 100vh !important;
 }
 
 .rodal-dialog:focus {

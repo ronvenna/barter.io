@@ -37,7 +37,12 @@ class Header extends React.Component {
         </div>
         <div className="sub-header">
           <div className="sub-header__search">
-             <input type="text" className="sub-header__search_term" placeholder="Search" />
+             <input
+               onChange={(e) => this.props.onSearch(e.target.value)}
+               type="text"
+               className="sub-header__search_term"
+               placeholder="Search"
+              />
              <button type="submit" className="sub-header__search_button">
                <i className="fa fa-search"></i>
             </button>
