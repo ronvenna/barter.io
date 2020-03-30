@@ -69,3 +69,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Database ER Diagram
+
+![MYSQL DATABASE ER DIAGRAM] (https://github.com/ronvenna/barter.io/blob/master/barterdatabasedesign.png)
