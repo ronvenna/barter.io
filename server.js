@@ -37,7 +37,7 @@ passport.authenticate('google', {
 );
 // Redirect to landing page after authentication
 app.get('/', (req, res) => {
-  const customerObject = require('./models/customerinfo');
+  const customerObject = require('./models/customerInfo');
   if (req.session.token) {
     res.cookie('token', req.session.token);
     customerObject.getCustomerDeatailsByEmail(req.session.email,function (err, items) {
@@ -72,7 +72,7 @@ app.use(express.static(path.join(__dirname, '/build')));
 //customerinfo table API's
 // Update Customer image
 app.post('/api/v1/userimage', (req, res) => {
-    const items = require('./models/customerinfo');
+    const items = require('./models/customerInfo');
      var customerid = req.body[0].customerid;
         var customerpicturelocation = req.body[0].customerpicturelocation;
     items.updateCustomerPictureById(customerid,customerpicturelocation,function (err, items) {
@@ -84,7 +84,7 @@ app.post('/api/v1/userimage', (req, res) => {
 });
 // Update Customer Email by ID
 app.post('/api/v1/usermail', (req, res) => {
-    const items = require('./models/customerinfo');
+    const items = require('./models/customerInfo');
      var customerid = req.body[0].customerid;
         var email = req.body[0].email;
     items.updateCustomerPictureById(email,customerid,function (err, items) {
@@ -96,7 +96,7 @@ app.post('/api/v1/usermail', (req, res) => {
 });
 // Update Customer Address
 app.post('/api/v1/useraddress', (req, res) => {
-    const items = require('./models/customerinfo');
+    const items = require('./models/customerInfo');
     var record = {
     customerid:req.body[0].customerid,
     address: req.body[0].address,
@@ -168,7 +168,7 @@ app.post('/api/v1/availableitems', (req, res) => {
 });
 //update available items by customerid
 app.post('/api/v1/updateitemsbyid', (req, res) => {
-    const items = require('./models/customerinfo');
+    const items = require('./models/customerInfo');
     var record = {
         customerid: req.body[0].customerid,
         itemid: req.body[0].itemid,
