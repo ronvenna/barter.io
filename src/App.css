@@ -128,6 +128,7 @@ input[type=number]::-webkit-outer-spin-button {
   height: 200px;
 }
 
+
 .item__title {
     text-transform: capitalize;
     line-height: 2.5;
